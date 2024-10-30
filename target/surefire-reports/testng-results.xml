@@ -1,11 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="0" passed="0" failed="0" skipped="0">
+<testng-results ignored="0" total="4" passed="4" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-10-22T15:18:33 IST" name="Selenium Test Suite" finished-at="2024-10-22T15:18:33 IST" duration-ms="17">
+  <suite started-at="2024-10-28T14:55:49 IST" name="Selenium Test Suite" finished-at="2024-10-28T14:56:08 IST" duration-ms="18502">
     <groups>
     </groups>
-    <test started-at="2024-10-22T15:18:33 IST" name="Login Tests" finished-at="2024-10-22T15:18:33 IST" duration-ms="17">
+    <test started-at="2024-10-28T14:55:49 IST" name="Login Tests" finished-at="2024-10-28T14:56:08 IST" duration-ms="18502">
+      <class name="test.LoginTest">
+        <test-method is-config="true" signature="setUp()[pri:0, instance:test.LoginTest@6a192cfe]" started-at="2024-10-28T14:55:49 IST" name="setUp" finished-at="2024-10-28T14:55:55 IST" duration-ms="5474" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUp -->
+        <test-method signature="testLogin(java.lang.String,java.lang.String,java.lang.String)[pri:0, instance:test.LoginTest@6a192cfe]" started-at="2024-10-28T14:55:55 IST" name="testLogin" data-provider="csvLoginCredentials" finished-at="2024-10-28T14:55:58 IST" duration-ms="2794" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[incorrectUser]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[12345]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[ログインエラー
+ログインID又はパスワードが間違っています]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testLogin -->
+        <test-method signature="testLogin(java.lang.String,java.lang.String,java.lang.String)[pri:0, instance:test.LoginTest@6a192cfe]" started-at="2024-10-28T14:55:58 IST" name="testLogin" data-provider="csvLoginCredentials" finished-at="2024-10-28T14:55:58 IST" duration-ms="392" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[himali@hsenidmobile.com]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[incorrectPassword]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[ログインエラー
+ログインID又はパスワードが間違っています]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testLogin -->
+        <test-method signature="testLogin(java.lang.String,java.lang.String,java.lang.String)[pri:0, instance:test.LoginTest@6a192cfe]" started-at="2024-10-28T14:55:58 IST" name="testLogin" data-provider="csvLoginCredentials" finished-at="2024-10-28T14:55:58 IST" duration-ms="327" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[student]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[Password123]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[ログインエラー
+ログインID又はパスワードが間違っています]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testLogin -->
+        <test-method signature="testLogin(java.lang.String,java.lang.String,java.lang.String)[pri:0, instance:test.LoginTest@6a192cfe]" started-at="2024-10-28T14:55:58 IST" name="testLogin" data-provider="csvLoginCredentials" finished-at="2024-10-28T14:56:03 IST" duration-ms="4473" status="PASS">
+          <params>
+            <param index="0">
+              <value>
+                <![CDATA[hashini@hsenidlanka.com]]>
+              </value>
+            </param>
+            <param index="1">
+              <value>
+                <![CDATA[123456]]>
+              </value>
+            </param>
+            <param index="2">
+              <value>
+                <![CDATA[Login Successful!]]>
+              </value>
+            </param>
+          </params>
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- testLogin -->
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:test.LoginTest@6a192cfe]" started-at="2024-10-28T14:56:03 IST" name="tearDown" finished-at="2024-10-28T14:56:08 IST" duration-ms="4905" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDown -->
+      </class> <!-- test.LoginTest -->
     </test> <!-- Login Tests -->
   </suite> <!-- Selenium Test Suite -->
 </testng-results>

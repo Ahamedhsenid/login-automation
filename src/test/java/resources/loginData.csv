@@ -1,0 +1,5 @@
+username,password,expectedOutcome
+incorrectUser,12345,ログインエラー\nログインID又はパスワードが間違っています
+himali@hsenidmobile.com,incorrectPassword,ログインエラー\nログインID又はパスワードが間違っています
+student,Password123,ログインエラー\nログインID又はパスワードが間違っています
+hashini@hsenidlanka.com,123456,Login Successful!

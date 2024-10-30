@@ -18,6 +18,7 @@ public class LoginPage {
     private By passwordField = By.xpath("//*[@id=\"input-password\"]");
     private By loginButton = By.xpath("/html/body/ngx-app/nb-auth/nb-layout/div/div/div/div/div/nb-layout-column/nb-card/nb-card-body/nb-auth-block/ngx-login/form/nb-card/nb-card-body/div[3]/div/button");
     private By errorMessageLocator = By.xpath("//*[@id=\"cdk-overlay-0\"]/nb-toastr-container");
+    //*[@id="cdk-overlay-0"]/nb-toastr-container
     private By switchDeviceButton = By.xpath("//*[@id=\"cdk-overlay-1\"]/nb-dialog-container/ngx-login-warning/nb-card/nb-card-body/div[2]/div[1]/button");
     private By switchDeviceButtonReg = By.xpath("//*[@id=\"cdk-overlay-0\"]/nb-dialog-container/ngx-login-warning/nb-card/nb-card-body/div[2]/div[1]/button");
     // Constructor
@@ -28,12 +29,18 @@ public class LoginPage {
 
     // Method to perform login
     public void setUsername(String username) {
+        if (username == null || username.isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be null or empty");
+        }
         WebElement usernameElement = wait.until(ExpectedConditions.visibilityOfElementLocated(usernameField));
         usernameElement.clear();
         usernameElement.sendKeys(username);
     }
 
     public void setPassword(String password) {
+        if (password == null || password.isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be null or empty");
+        }
         WebElement passwordElement = wait.until(ExpectedConditions.visibilityOfElementLocated(passwordField));
         passwordElement.clear();
         passwordElement.sendKeys(password);
@@ -47,8 +54,10 @@ public class LoginPage {
     public String getErrorMessage() {
         try {
             WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessageLocator));
+
             String message = errorMessage.getText();
-            errorMessage.click(); // Dismiss error
+
+//            errorMessage.click(); // Dismiss error
             return message;
         } catch (Exception e) {
             return null; // Return null if no error message is displayed
@@ -84,5 +93,10 @@ public class LoginPage {
 
     public String getCurrentUrl() {
         return driver.getCurrentUrl();
+    }
+    // Method to clear the form fields
+    public void clearFields() {
+        driver.findElement(usernameField).clear();
+        driver.findElement(passwordField).clear();
     }
 }

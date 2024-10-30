@@ -7,69 +7,80 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.example.pages.LoginPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+
+import java.time.Duration;
 
 public class LoginTest {
     private static ExtentReports extentReports;
     private static ExtentTest extentTest;
+    private WebDriver driver;
+    private WebDriverWait wait;
 
-    public static void main(String[] args) {
+    @BeforeClass
+    public void setUp() {
         // Initialize Extent Reports
         extentReports = new ExtentReports();
         ExtentSparkReporter sparkReporter = new ExtentSparkReporter("login-report.html");
         extentReports.attachReporter(sparkReporter);
 
         // Setup WebDriver
+//        WebDriverManager.chromedriver().setup();
+ //      driver = new ChromeDriver();
+      // driver.manage().window().maximize();
+
         WebDriverManager.chromedriver().setup();
-        WebDriver driver = new ChromeDriver();
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         driver.get("https://qa.pht.hsenidjapan.com/auth/login");
+    }
+
+    @Test(dataProvider = "csvLoginCredentials", dataProviderClass = CSVDataProvider.class)
+    public void testLogin(String username, String password, String expectedMessage) {
+        extentTest = extentReports.createTest("Login Test with username: " + username);
+
+        // Navigate to the login page
+        //driver.get("https://qa.pht.hsenidjapan.com/auth/login");
 
         // Create an instance of the LoginPage class
         LoginPage loginPage = new LoginPage(driver);
 
-        // Perform login tests
-        performLoginTests(driver, loginPage);
-
-        // Flush the extent report
-        extentReports.flush();
-        driver.quit();
-    }
-
-    private static void performLoginTests(WebDriver driver, LoginPage loginPage) {
-        // Test cases with expected error messages
-        runLoginTest(driver, loginPage, "incorrectUser", "123456", "ログインエラー\nログインID又はパスワードが間違っています");
-        runLoginTest(driver, loginPage, "himali@hsenidmobile.com", "incorrectPassword", "ログインエラー\nログインID又はパスワードが間違っています");
-        runLoginTest(driver, loginPage, "student", "Password123", "ログインエラー\nログインID又はパスワードが間違っています");
-
-        // Valid login
-        runLoginTest(driver, loginPage, "hashini@hsenidlanka.com", "123456", "Login Successful!");
-    }
-
-    private static void runLoginTest(WebDriver driver, LoginPage loginPage, String username, String password, String expectedMessage) {
-        extentTest = extentReports.createTest("Login Test with " + username + " and " + password);
-
-        // Perform the login steps
+        // Perform login
         loginPage.setUsername(username);
         loginPage.setPassword(password);
         loginPage.clickLogin();
 
-        // Handle potential error message
+        // Handle potential error message or continue to device switch and dashboard validation
+        handleLoginFlow(loginPage, expectedMessage);
+
+
+
+    }
+
+    private void handleLoginFlow(LoginPage loginPage, String expectedMessage) {
+        // Check if an error message appears
         String actualMessage = loginPage.getErrorMessage();
+        System.out.println(actualMessage);
         if (actualMessage != null && actualMessage.contains(expectedMessage)) {
-            extentTest.pass("Test passed with expected message: " + expectedMessage);
+            extentTest.pass("Test passed with expected error message: " + expectedMessage);
         } else {
-            // Validate successful login or handle device switch
-            validateLoginFlow(driver, loginPage, extentTest, expectedMessage);
+            validateLoginFlow(loginPage, expectedMessage);
         }
     }
 
-    private static void validateLoginFlow(WebDriver driver, LoginPage loginPage, ExtentTest extentTest, String expectedMessage) {
-        // Check if we need to handle device switch
+    private void validateLoginFlow(LoginPage loginPage, String expectedMessage) {
+        // Check if device switch prompt is displayed
         if (loginPage.isDeviceSwitchPromptDisplayed()) {
             loginPage.clickSwitchDevice();
         }
 
-        // Now check if the dashboard is loaded
+        // Check if the dashboard is loaded or if the current URL matches the expected dashboard URL
         if (loginPage.isDashboardLoaded()) {
             extentTest.pass("Login successful and dashboard loaded!");
         } else {
@@ -80,5 +91,12 @@ public class LoginTest {
                 extentTest.fail("Login failed, incorrect URL: " + currentUrl);
             }
         }
+    }
+
+    @AfterClass
+    public void tearDown() {
+        // Flush the extent report and close the driver
+        extentReports.flush();
+        driver.quit();
     }
 }
