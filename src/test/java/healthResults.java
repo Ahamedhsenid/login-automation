@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 
-public class PhysicianTest {
+public class healthResults {
     private static ExtentReports extentReports;
     private static ExtentTest extentTest;
     private static WebDriver driver;
@@ -29,7 +29,7 @@ public class PhysicianTest {
         setupWebDriver();
 
         try {
-            extentTest = extentReports.createTest("Physician Login Check Automation");
+            extentTest = extentReports.createTest("health results  Check Automation");
 
             driver.get("https://qa.pht.hsenidjapan.com/auth/login");
             LoginPage loginPage = new LoginPage(driver);
@@ -39,7 +39,8 @@ public class PhysicianTest {
             performLogin(loginPage);
             handleDeviceSwitch(loginPage);
          //  navigateToSettingsPage(dashboardPage);
-           physicianLogin(dashboardPage, loginPage);
+         //  physicianLogin(dashboardPage, loginPage);
+            healthResultsCheck(dashboardPage);
 
 
 
@@ -54,7 +55,7 @@ public class PhysicianTest {
 
     private static void setupExtentReports() {
         extentReports = new ExtentReports();
-        ExtentSparkReporter sparkReporter = new ExtentSparkReporter("physician-login-report.html");
+        ExtentSparkReporter sparkReporter = new ExtentSparkReporter("health-results-report.html");
         extentReports.attachReporter(sparkReporter);
     }
 
@@ -68,7 +69,7 @@ public class PhysicianTest {
 
     private static void performLogin(LoginPage loginPage) {
 
-        loginPage.setUsername("nimasha@hsenidoutsourcing.com");
+        loginPage.setUsername("hashini@hsenidlanka.com");
         loginPage.setPassword("123456");
         loginPage.clickLogin();
         extentTest.log(Status.PASS, "Login test passed");
@@ -94,6 +95,27 @@ public class PhysicianTest {
             extentTest.log(Status.INFO, "Physician login failed");
         }
     }
+
+    private static void healthResultsCheck(DashboardPage dashboardPage) {
+        dashboardPage.setLanguage();
+        dashboardPage.setEmployeeList();
+        extentTest.log(Status.INFO, "Health results page clicked");
+        dashboardPage.healthCheckEmployee();
+
+        dashboardPage.healthResults();
+
+        // First, check for the negative scenario using the noData method
+        try {
+            // Try to locate the health data element
+            dashboardPage.healthData();
+            extentTest.log(Status.PASS, "Health data is available.");
+        } catch (NoSuchElementException e) {
+//            extentTest.log(Status.FAIL, "Error: Unable to locate health data or 'no data' message.");
+            dashboardPage.noData();
+            extentTest.fail("Health data is not available.");
+        }
+    }
+
 
     private static void handleDeviceSwitch(LoginPage loginPage) {
         try {
