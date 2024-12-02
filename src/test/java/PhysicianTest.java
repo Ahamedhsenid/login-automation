@@ -31,7 +31,7 @@ public class PhysicianTest {
         try {
             extentTest = extentReports.createTest("Physician Login Check Automation");
 
-            driver.get("https://qa.pht.hsenidjapan.com/auth/login");
+            driver.get("https://logsiru-dev.practechs.com/auth/login");
             LoginPage loginPage = new LoginPage(driver);
             DashboardPage dashboardPage = new DashboardPage(driver);
 
@@ -84,7 +84,7 @@ public class PhysicianTest {
             dashboardPage.healthcheckTitle();
 
             String currentUrl = loginPage.getCurrentUrl();
-            if (currentUrl.equals("https://qa.pht.hsenidjapan.com/health-check/decision/list")) {
+            if (currentUrl.equals("https://logsiru-dev.practechs.com/dashboard")) {
                 extentTest.pass("Physician Login successful with correct URL: " + currentUrl);
             } else {
                 extentTest.fail("Physician Login failed, incorrect URL: " + currentUrl);
