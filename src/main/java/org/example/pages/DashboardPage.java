@@ -31,6 +31,10 @@ public class DashboardPage {
     private By employeeJudgementTitle = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div/div/div/div/nb-layout-header/nav/ngx-header/div[1]/label");
     private By healthcheckTitle = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div[1]/div/div/div/div/nb-layout-column/div/ngx-emp-decision-list/nb-card/nb-card-body/nb-tabset/ul/li[1]/a");
 
+    // for physician interview mgmnt
+    private By interviewManagement = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div/div/div/nb-sidebar/div/div/nb-menu/ul/li[6]/a/span");
+
+
 
 
 
@@ -110,5 +114,8 @@ public class DashboardPage {
         WebElement healthcheckTitleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(healthcheckTitle));
         healthcheckTitleElement.click();
     }
+
+
+
 
 }

@@ -5,6 +5,7 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
 import org.example.pages.DashboardPage;
+import org.example.pages.InterviewManagementPage;
 import org.example.pages.LoginPage;
 
 import org.openqa.selenium.NoSuchElementException;
@@ -34,12 +35,16 @@ public class PhysicianTest {
             driver.get("https://logsiru-dev.practechs.com/auth/login");
             LoginPage loginPage = new LoginPage(driver);
             DashboardPage dashboardPage = new DashboardPage(driver);
+            InterviewManagementPage interviewManagementPage = new InterviewManagementPage(driver);
 
 
             performLogin(loginPage);
             handleDeviceSwitch(loginPage);
          //  navigateToSettingsPage(dashboardPage);
-           physicianLogin(dashboardPage, loginPage);
+          // physicianLogin(dashboardPage, loginPage);
+            Thread.sleep(5000);
+            physicianInterview(dashboardPage, interviewManagementPage);
+            addInterview(interviewManagementPage);
 
 
 
@@ -95,6 +100,7 @@ public class PhysicianTest {
         }
     }
 
+
     private static void handleDeviceSwitch(LoginPage loginPage) {
         try {
             loginPage.setSwitchDeviceButtonReg();
@@ -112,6 +118,33 @@ public class PhysicianTest {
         dashboardPage.clickAdd();
         extentTest.log(Status.PASS, "Navigated to Basic Info Add/Edit Page");
     }
+
+    private static void physicianInterview(DashboardPage dashboardPage,InterviewManagementPage interviewManagementPage) {
+
+        try {
+            dashboardPage.setLanguage();
+            interviewManagementPage.clickinterviewManagement();
+
+        } catch (NoSuchElementException e) {
+            extentTest.log(Status.INFO, "Physician login failed");
+        }
+    }
+
+    private static void addInterview(InterviewManagementPage interviewManagementPage) {
+
+        try {
+            Thread.sleep(18000);
+            interviewManagementPage.clickaddinterview();
+            interviewManagementPage.setemployeeNum("VIET-01 TamSin");
+
+        } catch (NoSuchElementException e) {
+            extentTest.log(Status.INFO, "Physician login failed");
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
 
 
