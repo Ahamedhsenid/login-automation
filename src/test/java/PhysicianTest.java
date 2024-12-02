@@ -84,7 +84,7 @@ public class PhysicianTest {
             dashboardPage.healthcheckTitle();
 
             String currentUrl = loginPage.getCurrentUrl();
-            if (currentUrl.equals("https://logsiru-dev.practechs.com/dashboard")) {
+            if (currentUrl.equals("https://logsiru-dev.practechs.com/health-check/decision/list")) {
                 extentTest.pass("Physician Login successful with correct URL: " + currentUrl);
             } else {
                 extentTest.fail("Physician Login failed, incorrect URL: " + currentUrl);
