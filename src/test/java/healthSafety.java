@@ -5,6 +5,7 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.io.FileUtils;
 import org.example.pages.DashboardPage;
+import org.example.pages.HealthSafetyPage;
 import org.example.pages.LoginPage;
 
 import org.openqa.selenium.NoSuchElementException;
@@ -18,7 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 
-public class PhtLogout {
+public class healthSafety {
     private static ExtentReports extentReports;
     private static ExtentTest extentTest;
     private static WebDriver driver;
@@ -29,18 +30,20 @@ public class PhtLogout {
         setupWebDriver();
 
         try {
-            extentTest = extentReports.createTest("pht logout Check Automation");
+            extentTest = extentReports.createTest("health Safety Create Automation");
 
             driver.get("https://logsiru-dev.practechs.com/auth/login");
             LoginPage loginPage = new LoginPage(driver);
             DashboardPage dashboardPage = new DashboardPage(driver);
+            HealthSafetyPage healthSafetyPage = new HealthSafetyPage(driver);
 
 
             performLogin(loginPage);
             handleDeviceSwitch(loginPage);
          //  navigateToSettingsPage(dashboardPage);
           // physicianLogin(dashboardPage, loginPage);
-            phtlogout(dashboardPage, loginPage);
+          //  phtlogout(dashboardPage, loginPage);
+            healthSafetyCreate(dashboardPage, healthSafetyPage);
 
 
 
@@ -55,7 +58,7 @@ public class PhtLogout {
 
     private static void setupExtentReports() {
         extentReports = new ExtentReports();
-        ExtentSparkReporter sparkReporter = new ExtentSparkReporter("pht-logout-report.html");
+        ExtentSparkReporter sparkReporter = new ExtentSparkReporter("health Safety Create-report.html");
         extentReports.attachReporter(sparkReporter);
     }
 
@@ -75,26 +78,23 @@ public class PhtLogout {
         extentTest.log(Status.PASS, "Login test passed");
     }
 
-    private static void phtlogout(DashboardPage dashboardPage, LoginPage loginPage) {
+    private static void healthSafetyCreate(DashboardPage dashboardPage,HealthSafetyPage healthSafetyPage ) {
 
         try {
             dashboardPage.setLanguage();
-            dashboardPage.clickProfileIcon();
-            dashboardPage.clickLogout();
-            dashboardPage.clickConfirmlogout();
-            Thread.sleep(2000);
-
-            String currentUrl = loginPage.getCurrentUrl();
-            if (currentUrl.equals("https://logsiru-dev.practechs.com/auth/login")) {
-                extentTest.pass("PHT Logout successful with correct URL: " + currentUrl);
+            healthSafetyPage.clickhealthSafety();
+            healthSafetyPage.settitlehealthSafety("Health Safety test ");
+            healthSafetyPage.setofficenameHealthSafety("tokyo");
+            healthSafetyPage.submithealthSafety();
+            String message = healthSafetyPage.sucessHealthSafety();
+            if (message.contains("Created")) {
+                extentTest.pass("health and safety creation succesfully created" );
             } else {
-                extentTest.fail("PHT Logout failed, incorrect URL: " + currentUrl);
+                extentTest.log(Status.FAIL, "health and safety creation failed to create");
             }
 
         } catch (NoSuchElementException e) {
-            extentTest.log(Status.INFO, "PHT Logout failed");
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            extentTest.log(Status.FAIL, "health and safety creation failed to create");
         }
     }
 
