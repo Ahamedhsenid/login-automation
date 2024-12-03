@@ -60,7 +60,7 @@ public class Registration {
         try {
             extentTest = extentReports.createTest("Employee Registration Automation");
 
-            driver.get("https://qa.pht.hsenidjapan.com/auth/login");
+            driver.get("https://logsiru-dev.practechs.com/auth/login");
             LoginPage loginPage = new LoginPage(driver);
             DashboardPage dashboardPage = new DashboardPage(driver);
             EmployeeCreationPage creationPage = new EmployeeCreationPage(driver, action);
