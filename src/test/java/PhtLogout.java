@@ -18,7 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 
-public class PhysicianTest {
+public class PhtLogout {
     private static ExtentReports extentReports;
     private static ExtentTest extentTest;
     private static WebDriver driver;
@@ -29,7 +29,7 @@ public class PhysicianTest {
         setupWebDriver();
 
         try {
-            extentTest = extentReports.createTest("Physician Login Check Automation");
+            extentTest = extentReports.createTest("pht logout Check Automation");
 
             driver.get("https://logsiru-dev.practechs.com/auth/login");
             LoginPage loginPage = new LoginPage(driver);
@@ -39,11 +39,12 @@ public class PhysicianTest {
             performLogin(loginPage);
             handleDeviceSwitch(loginPage);
          //  navigateToSettingsPage(dashboardPage);
-           physicianLogin(dashboardPage, loginPage);
+          // physicianLogin(dashboardPage, loginPage);
+            phtlogout(dashboardPage, loginPage);
 
 
 
-//            addNewOfficeValidation(officeCreationPage);
+
 
         } catch (Exception e) {
             logFailure("Test failed: " + e.getMessage());
@@ -54,7 +55,7 @@ public class PhysicianTest {
 
     private static void setupExtentReports() {
         extentReports = new ExtentReports();
-        ExtentSparkReporter sparkReporter = new ExtentSparkReporter("physician-login-report.html");
+        ExtentSparkReporter sparkReporter = new ExtentSparkReporter("pht-logout-report.html");
         extentReports.attachReporter(sparkReporter);
     }
 
@@ -68,30 +69,32 @@ public class PhysicianTest {
 
     private static void performLogin(LoginPage loginPage) {
 
-        loginPage.setUsername("nimasha@hsenidoutsourcing.com");
+        loginPage.setUsername("hashini@hsenidlanka.com");
         loginPage.setPassword("123456");
         loginPage.clickLogin();
         extentTest.log(Status.PASS, "Login test passed");
     }
 
-    private static void physicianLogin(DashboardPage dashboardPage, LoginPage loginPage) {
+    private static void phtlogout(DashboardPage dashboardPage, LoginPage loginPage) {
 
         try {
             dashboardPage.setLanguage();
-            dashboardPage.clickHealthCheck();
-            dashboardPage.clickEmployeeJudgement();
-            dashboardPage.EmployeeJudgementTitle();
-            dashboardPage.healthcheckTitle();
+            dashboardPage.clickProfileIcon();
+            dashboardPage.clickLogout();
+            dashboardPage.clickConfirmlogout();
+            Thread.sleep(2000);
 
             String currentUrl = loginPage.getCurrentUrl();
-            if (currentUrl.equals("https://logsiru-dev.practechs.com/health-check/decision/list")) {
-                extentTest.pass("Physician Login successful with correct URL: " + currentUrl);
+            if (currentUrl.equals("https://logsiru-dev.practechs.com/auth/login")) {
+                extentTest.pass("PHT Logout successful with correct URL: " + currentUrl);
             } else {
-                extentTest.fail("Physician Login failed, incorrect URL: " + currentUrl);
+                extentTest.fail("PHT Logout failed, incorrect URL: " + currentUrl);
             }
 
         } catch (NoSuchElementException e) {
-            extentTest.log(Status.INFO, "Physician login failed");
+            extentTest.log(Status.INFO, "PHT Logout failed");
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 

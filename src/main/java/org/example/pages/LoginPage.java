@@ -21,6 +21,11 @@ public class LoginPage {
     //*[@id="cdk-overlay-0"]/nb-toastr-container
     private By switchDeviceButton = By.xpath("//*[@id=\"cdk-overlay-1\"]/nb-dialog-container/ngx-login-warning/nb-card/nb-card-body/div[2]/div[1]/button");
     private By switchDeviceButtonReg = By.xpath("//*[@id=\"cdk-overlay-0\"]/nb-dialog-container/ngx-login-warning/nb-card/nb-card-body/div[2]/div[1]/button");
+
+
+    //logout
+    private By loginLogo = By.xpath("/html/body/ngx-app/nb-auth/nb-layout/div/div/div/div/div/nb-layout-column/nb-card/nb-card-body/nb-auth-block/ngx-login/div/div[1]");
+
     // Constructor
     public LoginPage(WebDriver driver) {
         this.driver = driver;
@@ -92,6 +97,7 @@ public class LoginPage {
     }
 
     public String getCurrentUrl() {
+       // wait.until(ExpectedConditions.visibilityOfElementLocated(loginLogo));
         return driver.getCurrentUrl();
     }
     // Method to clear the form fields
