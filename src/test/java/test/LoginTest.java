@@ -38,7 +38,7 @@ public class LoginTest {
         driver.manage().window().maximize();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        driver.get("https://qa.pht.hsenidjapan.com/auth/login");
+        driver.get("https://logsiru-dev.practechs.com/auth/login");
     }
 
     @Test(dataProvider = "csvLoginCredentials", dataProviderClass = CSVDataProvider.class)
@@ -85,7 +85,7 @@ public class LoginTest {
             extentTest.pass("Login successful and dashboard loaded!");
         } else {
             String currentUrl = loginPage.getCurrentUrl();
-            if (currentUrl.equals("https://qa.pht.hsenidjapan.com/dashboard")) {
+            if (currentUrl.equals("https://logsiru-dev.practechs.com/dashboard")) {
                 extentTest.pass("Login successful with correct URL: " + currentUrl);
             } else {
                 extentTest.fail("Login failed, incorrect URL: " + currentUrl);
