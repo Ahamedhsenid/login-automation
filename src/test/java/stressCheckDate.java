@@ -3,23 +3,20 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.apache.commons.io.FileUtils;
 import org.example.pages.DashboardPage;
-import org.example.pages.HealthSafetyPage;
 import org.example.pages.LoginPage;
+import org.example.pages.StressAssessmentPage;
 
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 
-public class healthSafety {
+public class stressCheckDate {
     private static ExtentReports extentReports;
     private static ExtentTest extentTest;
     private static WebDriver driver;
@@ -30,24 +27,19 @@ public class healthSafety {
         setupWebDriver();
 
         try {
-            extentTest = extentReports.createTest("health Safety Create Automation");
+            extentTest = extentReports.createTest(" Stress check invalid date test");
 
             driver.get("https://logsiru-dev.practechs.com/auth/login");
             LoginPage loginPage = new LoginPage(driver);
             DashboardPage dashboardPage = new DashboardPage(driver);
-            HealthSafetyPage healthSafetyPage = new HealthSafetyPage(driver);
-
+            StressAssessmentPage stressAssessmentPage = new StressAssessmentPage(driver);
 
             performLogin(loginPage);
             handleDeviceSwitch(loginPage);
-         //  navigateToSettingsPage(dashboardPage);
-          // physicianLogin(dashboardPage, loginPage);
-          //  phtlogout(dashboardPage, loginPage);
-            healthSafetyCreate(dashboardPage, healthSafetyPage);
-
-
-
-
+            navigateToStressAssessment(dashboardPage);
+            //createStressCheck(stressAssessmentPage);
+            invalidDate(stressAssessmentPage);
+            //validateCreateStressCheck(stressAssessmentPage);
 
         } catch (Exception e) {
             logFailure("Test failed: " + e.getMessage());
@@ -58,7 +50,7 @@ public class healthSafety {
 
     private static void setupExtentReports() {
         extentReports = new ExtentReports();
-        ExtentSparkReporter sparkReporter = new ExtentSparkReporter("health Safety Create-report.html");
+        ExtentSparkReporter sparkReporter = new ExtentSparkReporter("Stress-check-invalid-date test-report.html");
         extentReports.attachReporter(sparkReporter);
     }
 
@@ -71,31 +63,10 @@ public class healthSafety {
     }
 
     private static void performLogin(LoginPage loginPage) {
-
         loginPage.setUsername("hashini@hsenidlanka.com");
         loginPage.setPassword("123456");
         loginPage.clickLogin();
         extentTest.log(Status.PASS, "Login test passed");
-    }
-
-    private static void healthSafetyCreate(DashboardPage dashboardPage,HealthSafetyPage healthSafetyPage ) {
-
-        try {
-            dashboardPage.setLanguage();
-            healthSafetyPage.clickhealthSafety();
-            healthSafetyPage.settitlehealthSafety("Health Safety test ");
-            healthSafetyPage.setofficenameHealthSafety("tokyo");
-            healthSafetyPage.submithealthSafety();
-            String message = healthSafetyPage.sucessHealthSafety();
-            if (message.contains("Created")) {
-                extentTest.pass("health and safety creation succesfully created" );
-            } else {
-                extentTest.log(Status.FAIL, "health and safety creation failed to create");
-            }
-
-        } catch (NoSuchElementException e) {
-            extentTest.log(Status.FAIL, "health and safety creation failed to create");
-        }
     }
 
     private static void handleDeviceSwitch(LoginPage loginPage) {
@@ -107,18 +78,58 @@ public class healthSafety {
         }
     }
 
-    private static void navigateToSettingsPage(DashboardPage dashboardPage) {
+    private static void navigateToStressAssessment(DashboardPage dashboardPage) {
         dashboardPage.setLanguage();
-        dashboardPage.clickSettings();
-        extentTest.log(Status.PASS, "Navigated to settings page");
+        dashboardPage.clickStressAssessment();
+        extentTest.log(Status.PASS, "Navigated to Stress Assessment section");
 
-        dashboardPage.clickAdd();
-        extentTest.log(Status.PASS, "Navigated to Basic Info Add/Edit Page");
+        dashboardPage.clickCreateStressBtn();
+        extentTest.log(Status.PASS, "Navigated to Create a New Stress Assessment page");
     }
 
+    private static void createStressCheck(StressAssessmentPage stressAssessmentPage){
+        stressAssessmentPage.stressName("Automation Test");
+        stressAssessmentPage.stressStartDate("2002-12-10");
+        stressAssessmentPage.stressEndDate("2002-12-09");
+        stressAssessmentPage.stressQuestion("57 stress check items");
+        stressAssessmentPage.clickSubmitBtn();
+        stressAssessmentPage.clickConfirmationBtn();
+    }
+
+    private static void invalidDate(StressAssessmentPage stressAssessmentPage){
+        stressAssessmentPage.stressName("Automation Test");
+        stressAssessmentPage.stressStartDate("2002-12-09");
+        stressAssessmentPage.stressEndDate("2002-12-10");
+        stressAssessmentPage.stressQuestion("57 stress check items");
+
+        try {
+            // Check if the submit button is disabled
+            if (!stressAssessmentPage.submitBtnEnabled()) {
+                extentTest.log(Status.PASS, "Submit button is disabled for invalid date, test passed.");
+            } else {
+                extentTest.log(Status.FAIL, "Submit button is enabled for invalid date, test failed.");
+            }
+        } catch (Exception e) {
+            extentTest.log(Status.WARNING, "Error occurred while verifying invalid date logic: " + e.getMessage());
+        }
 
 
 
+    }
+
+    private static void validateCreateStressCheck(StressAssessmentPage stressAssessmentPage) {
+        try {
+            String message = stressAssessmentPage.stressErrorMessage();
+            if (message.contains("Error")) {
+                extentTest.log(Status.FAIL, "Date Error");
+            } else {
+                extentTest.log(Status.PASS,"Created Successfully");
+            }
+
+        } catch (TimeoutException e){
+            logFailure("Timing Loadout");
+        }
+    }
 
     private static void logFailure(String message) {
         extentTest.log(Status.FAIL, message);
@@ -145,8 +156,4 @@ public class healthSafety {
         }
         extentReports.flush();
     }
-
 }
-
-
-

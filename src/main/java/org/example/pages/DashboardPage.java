@@ -37,7 +37,10 @@ public class DashboardPage {
     private By Confirmlogout = By.xpath("//*[@id=\"cdk-overlay-2\"]/nb-dialog-container/ngx-logout-confirm-modal/nb-card/nb-card-body/div[3]/div[1]/button");
 
 
-
+    // stress check
+    private By stressAssessmentSection = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div/div/div/nb-sidebar/div/div/nb-menu/ul/li[4]/a");
+    private By implementationPlan = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div/div/div/nb-sidebar/div/div/nb-menu/ul/li[4]/ul/li[3]/a");
+    private By createStressBtn = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div/div/div/div/div/nb-layout-column/div/ngx-stress-check-implementaion-plan/div/nb-card/nb-card-body/div/div/div[2]/button");
 
 
 
@@ -128,6 +131,18 @@ public class DashboardPage {
     public void healthcheckTitle(){
         WebElement healthcheckTitleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(healthcheckTitle));
         healthcheckTitleElement.click();
+    }
+
+
+    // Create Stress Check Assessment
+    public void clickStressAssessment() {
+        WebElement employeeElement = driver.findElement(stressAssessmentSection);
+        employeeElement.click();
+        driver.findElement(implementationPlan).click();
+    }
+
+    public void clickCreateStressBtn(){
+        driver.findElement(createStressBtn).click();
     }
 
 }
