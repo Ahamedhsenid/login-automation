@@ -13,7 +13,7 @@ public class CSVDataProvider {
 
     @DataProvider(name = "csvLoginCredentials")
     public Object[][] readCsvData() throws IOException {
-        String filePath = "src/test/java/resources/loginData.csv"; // Adjust the path if necessary
+        String filePath = "src/test/java/resources/loginData.csv";
 
         // Using BufferedReader for better efficiency
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -28,7 +28,7 @@ public class CSVDataProvider {
 
         Object[][] data = new Object[validEntries][3];
 
-        // Reset reader and parser for actual data processing
+
         reader = new BufferedReader(new FileReader(filePath));
         parser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader());
 
@@ -55,6 +55,48 @@ public class CSVDataProvider {
 
         return data;
     }
+    @DataProvider(name = "csvRegistrationData")
+    public Object[][] readRegistrationCsvData() throws IOException {
+        String filePath = "src/test/java/resources/registration.csv";
+
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader());
+
+        int validEntries = 0;
+        for (CSVRecord record : parser) {
+            if (isRegistrationRecordValid(record)) {
+                validEntries++;
+            }
+        }
+
+        Object[][] data = new Object[validEntries][8];
+
+        // Reset reader and parser for actual data processing
+        reader = new BufferedReader(new FileReader(filePath));
+        parser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader());
+
+        int index = 0;
+        for (CSVRecord record : parser) {
+            if (isRegistrationRecordValid(record)) {
+                data[index][0] = record.get("FirstName");
+                data[index][1] = record.get("LastName");
+                data[index][2] = record.get("DOB");
+                data[index][3] = record.get("Gender");
+                data[index][4] = record.get("Office");
+                data[index][5] = record.get("Department");
+                data[index][6] = record.get("EmployeeNumber");
+                data[index][7] = record.get("OperationStatus");
+
+                System.out.println("First Name: '" + data[index][0] + "', Last Name: '" + data[index][1] + "', DOB: '" + data[index][2] + "', Gender: '" + data[index][3] + "', Office: '" + data[index][4] + "', Department: '" + data[index][5] + "', Employee Number: '" + data[index][6] + "', Operation Status: '" + data[index][7] + "'");
+                index++;
+            }
+        }
+
+        parser.close();
+        reader.close();
+
+        return data;
+    }
 
     private boolean isRecordValid(CSVRecord record) {
         String username = record.get("username");
@@ -64,5 +106,14 @@ public class CSVDataProvider {
         return username != null && !username.trim().isEmpty()
                 && password != null && !password.trim().isEmpty()
                 && expectedOutcome != null && !expectedOutcome.trim().isEmpty();
+    }
+    private boolean isRegistrationRecordValid(CSVRecord record) {
+        String[] requiredFields = {"LastName", "FirstName", "DOB", "Gender", "Office", "Department", "EmployeeNumber", "OperationStatus"};
+        for (String field : requiredFields) {
+            if (!record.isMapped(field) || record.get(field) == null || record.get(field).trim().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 }
