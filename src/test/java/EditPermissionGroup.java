@@ -5,41 +5,45 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.example.pages.DashboardPage;
 import org.example.pages.LoginPage;
-import org.example.pages.StressAssessmentPage;
+import org.example.pages.PermissionGroupPage;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.apache.commons.io.FileUtils;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 
-public class stressCheckDate {
+public class EditPermissionGroup {
     private static ExtentReports extentReports;
     private static ExtentTest extentTest;
     private static WebDriver driver;
     private static WebDriverWait wait;
+    private static Actions action;
 
     public static void main(String[] args) {
         setupExtentReports();
         setupWebDriver();
 
         try {
-            extentTest = extentReports.createTest(" Stress check invalid date test");
+            extentTest = extentReports.createTest("Create Permission Group");
 
+//            driver.get("https://qa.pht.hsenidjapan.com/auth/login");
             driver.get("https://logsiru-dev.practechs.com/auth/login");
             LoginPage loginPage = new LoginPage(driver);
             DashboardPage dashboardPage = new DashboardPage(driver);
-            StressAssessmentPage stressAssessmentPage = new StressAssessmentPage(driver);
+            PermissionGroupPage permissionGroupPage = new PermissionGroupPage(driver);
 
             performLogin(loginPage);
             handleDeviceSwitch(loginPage);
-            navigateToStressAssessment(dashboardPage);
-            //createStressCheck(stressAssessmentPage);
-            invalidDate(stressAssessmentPage);
-            //validateCreateStressCheck(stressAssessmentPage);
+            navigateToEmployeeSection(dashboardPage);
+            editPermissionGroup(dashboardPage, permissionGroupPage);
+         //   createPermissionManagerAdd(permissionGroupPage);
 
         } catch (Exception e) {
             logFailure("Test failed: " + e.getMessage());
@@ -50,7 +54,7 @@ public class stressCheckDate {
 
     private static void setupExtentReports() {
         extentReports = new ExtentReports();
-        ExtentSparkReporter sparkReporter = new ExtentSparkReporter("Stress-check-invalid-date test-report.html");
+        ExtentSparkReporter sparkReporter = new ExtentSparkReporter("create-permission-group-report.html");
         extentReports.attachReporter(sparkReporter);
     }
 
@@ -60,9 +64,11 @@ public class stressCheckDate {
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        action = new Actions(driver);
     }
 
     private static void performLogin(LoginPage loginPage) {
+
         loginPage.setUsername("hashini@hsenidlanka.com");
         loginPage.setPassword("123456");
         loginPage.clickLogin();
@@ -78,58 +84,44 @@ public class stressCheckDate {
         }
     }
 
-    private static void navigateToStressAssessment(DashboardPage dashboardPage) {
+    private static void navigateToEmployeeSection(DashboardPage dashboardPage) {
         dashboardPage.setLanguage();
-        dashboardPage.clickStressAssessment();
-        extentTest.log(Status.PASS, "Navigated to Stress Assessment section");
+        dashboardPage.clickSettingsPermission();
+        extentTest.log(Status.PASS, "Navigated to Permissions Settings section");
 
-        dashboardPage.clickCreateStressBtn();
-        extentTest.log(Status.PASS, "Navigated to Create a New Stress Assessment page");
+
+//        dashboardPage.clickEmployeeInfoUpload();
+//        extentTest.log(Status.PASS, "Navigated to upload page");
     }
 
-    private static void createStressCheck(StressAssessmentPage stressAssessmentPage){
-        stressAssessmentPage.stressName("Automation Test");
-        stressAssessmentPage.stressStartDate("2002-12-10");
-        stressAssessmentPage.stressEndDate("2002-12-09");
-        stressAssessmentPage.stressQuestion("57 stress check items");
-        stressAssessmentPage.clickSubmitBtn();
-        stressAssessmentPage.clickConfirmationBtn();
-    }
-
-    private static void invalidDate(StressAssessmentPage stressAssessmentPage){
-        stressAssessmentPage.stressName("Automation Test");
-        stressAssessmentPage.stressStartDate("2002-12-09");
-        stressAssessmentPage.stressEndDate("2002-12-10");
-        stressAssessmentPage.stressQuestion("57 stress check items");
-
+    private static void editPermissionGroup(DashboardPage dashboardPage, PermissionGroupPage permissionGroupPage) {
         try {
-            // Check if the submit button is disabled
-            if (!stressAssessmentPage.submitBtnEnabled()) {
-                extentTest.log(Status.PASS, "Submit button is disabled for invalid date, test passed.");
-            } else {
-                extentTest.log(Status.FAIL, "Submit button is enabled for invalid date, test failed.");
-            }
-        } catch (Exception e) {
-            extentTest.log(Status.WARNING, "Error occurred while verifying invalid date logic: " + e.getMessage());
+            Thread.sleep(2000);
+            dashboardPage.editPermission();
+            extentTest.log(Status.PASS, "Navigated to role Settings section");
+            Thread.sleep(500);
+            permissionGroupPage.setRole("open3");
+            java.util.List<String> labels = java.util.List.of("tokyo");
+            permissionGroupPage.setOffice(labels);
+
+           // permissionGroupPage.clickkeepBtn();
+
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
-
-
     }
 
-    private static void validateCreateStressCheck(StressAssessmentPage stressAssessmentPage) {
-        try {
-            String message = stressAssessmentPage.stressErrorMessage();
-            if (message.contains("Error")) {
-                extentTest.log(Status.FAIL, "Date Error");
-            } else {
-                extentTest.log(Status.PASS,"Created Successfully");
-            }
+    private static void createPermissionManagerAdd(PermissionGroupPage permissionGroupPage){
+        permissionGroupPage.setName("4 Share");
 
-        } catch (TimeoutException e){
-            logFailure("Timing Loadout");
-        }
+        permissionGroupPage.setEmail("john@doe.com");
+        permissionGroupPage.setRole("open9");
+        java.util.List<String> labels = java.util.List.of("tokyo");
+        permissionGroupPage.setOffice(labels);
     }
+
 
     private static void logFailure(String message) {
         extentTest.log(Status.FAIL, message);

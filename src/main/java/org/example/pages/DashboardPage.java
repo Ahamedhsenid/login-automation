@@ -16,7 +16,7 @@ public class DashboardPage {
     private By newRegistration = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div/div/div/div/div/nb-layout-column/div/ngx-employee-list-main/div/div[6]/button");
     private By language = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div/div/div/div/nb-layout-header/nav/ngx-header/div[2]/nb-actions/nb-action/div");
     private By langSelect = By.xpath("//*[contains(text(), 'English')]");
-    private By settings = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div/div/div/nb-sidebar/div/div/nb-menu/ul/li[14]/a");
+    private By settings = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div[1]/div/div/nb-sidebar/div/div/nb-menu/ul/li[15]/a");
     private By basicInfoSettings = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div[1]/div/div/nb-sidebar/div/div/nb-menu/ul/li[14]/ul/li[3]/a");
     private By add = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div/div/div/div/div/nb-layout-column/div/ngx-basic-information-setting/nb-card/nb-card-body/nb-tabset/ul/li[2]/a");
     private By updateEmployee = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div[1]/div/div/div/div/nb-layout-column/div/ngx-employee-list-main/nb-card/nb-card-body/div/ngx-data-table/div/div[2]/div/div/ng2-smart-table/table/tbody/tr[2]/td[1]/ng2-smart-table-cell/table-cell-view-mode/div/custom-view-component/ngx-table-view-employee/div[3]/label/u");
@@ -44,7 +44,10 @@ public class DashboardPage {
 
 
 
-
+    //permission group
+    private By permissionSetting = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div/div/div/nb-sidebar/div/div/nb-menu/ul/li[15]/ul/li[2]/a");
+    private By managerAddBtn = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div/div/div/div/div/nb-layout-column/div/ngx-permission-setting/nb-card/nb-card-body/nb-tabset/nb-tab[1]/div/div/div/button");
+    private By editpermissionBtn = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div/div/div/div/div/nb-layout-column/div/ngx-permission-setting/nb-card/nb-card-body/nb-tabset/nb-tab[1]/div/ngx-data-table/div/div[2]/div/div/ng2-smart-table/table/tbody/tr[1]/td[5]/ng2-smart-table-cell/table-cell-view-mode/div/custom-view-component/ngx-details-btn/div/div");
 
 
 
@@ -143,6 +146,22 @@ public class DashboardPage {
 
     public void clickCreateStressBtn(){
         driver.findElement(createStressBtn).click();
+    }
+
+
+
+    //permissiongroup
+    public void clickSettingsPermission(){
+        WebElement settingsElement = driver.findElement(settings);
+        settingsElement.click();
+        WebElement permissionSettingsElement = driver.findElement(permissionSetting);
+        permissionSettingsElement.click();
+//        WebElement managerAddElement = driver.findElement(managerAddBtn);
+//        managerAddElement.click();
+    }
+    public void editPermission(){
+        WebElement editPermissionElement = wait.until(ExpectedConditions.visibilityOfElementLocated(editpermissionBtn));
+        editPermissionElement.click();
     }
 
 }
