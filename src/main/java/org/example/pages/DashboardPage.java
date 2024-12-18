@@ -48,7 +48,10 @@ public class DashboardPage {
     private By healthData1 = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div[1]/div/div/div/div/nb-layout-column/div/ngx-employee-details/nb-card/nb-card-body/div[5]/nb-tabset/nb-tab[1]/ngx-health-checkup-result/div/div/div/ngx-data-table/div/div[2]/div/div/ng2-smart-table/table/tbody/tr[1]/td[2]/ng2-smart-table-cell/table-cell-view-mode/div/custom-view-component/ngx-details-btn/div/div/label/nb-icon");
     private By noData= By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div[1]/div/div/div/div/nb-layout-column/div/ngx-employee-details/nb-card/nb-card-body/div[5]/nb-tabset/nb-tab[1]/ngx-health-checkup-result/div/div/div/ngx-data-table/div/div[2]/div/div/ng2-smart-table/table/tbody/tr/td");
 
+// pht logout
 
+    private By logout = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div/div/div/div/div/nb-layout-column/div/ngx-profile-management/div/div/div/nb-card[2]/nb-card-body/div[2]/div/div/div[2]/button");
+    private By Confirmlogout = By.xpath("//*[@id=\"cdk-overlay-2\"]/nb-dialog-container/ngx-logout-confirm-modal/nb-card/nb-card-body/div[3]/div[1]/button");
 
 
 
@@ -174,6 +177,14 @@ public class DashboardPage {
         } catch (NoSuchElementException e) {
             return false;
         }
+    }
+    public void clickLogout(){
+        WebElement logoutElement = wait.until(ExpectedConditions.visibilityOfElementLocated(logout));
+        logoutElement.click();
+    }
+    public void clickConfirmlogout(){
+        WebElement confirmlogoutElement = wait.until(ExpectedConditions.visibilityOfElementLocated(Confirmlogout));
+        confirmlogoutElement.click();
     }
 
 
