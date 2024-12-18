@@ -1,6 +1,7 @@
 package org.example.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -31,7 +32,21 @@ public class DashboardPage {
     private By employeeJudgementTitle = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div/div/div/div/nb-layout-header/nav/ngx-header/div[1]/label");
     private By healthcheckTitle = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div[1]/div/div/div/div/nb-layout-column/div/ngx-emp-decision-list/nb-card/nb-card-body/nb-tabset/ul/li[1]/a");
 
+    //for data check employees
 
+    //no 01 has data
+    // private By healthCheckEmployee= By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div[1]/div/div/div/div/nb-layout-column/div/ngx-employee-list-main/nb-card/nb-card-body/div/ngx-data-table/div/div[2]/div/div/ng2-smart-table/table/tbody/tr[2]/td[1]/ng2-smart-table-cell/table-cell-view-mode/div/custom-view-component/ngx-table-view-employee/div[3]/label/u");
+    //no 02 no data
+//    private By healthCheckEmployee= By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div/div/div/div/div/nb-layout-column/div/ngx-employee-list-main/nb-card/nb-card-body/div/ngx-data-table/div/div[2]/div/div/ng2-smart-table/table/tbody/tr[1]/td[1]/ng2-smart-table-cell/table-cell-view-mode/div/custom-view-component/ngx-table-view-employee/div[3]/label/u");
+//no 03 - has data
+    private By healthCheckEmployee= By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div[1]/div/div/div/div/nb-layout-column/div/ngx-employee-list-main/nb-card/nb-card-body/div/ngx-data-table/div/div[2]/div/div/ng2-smart-table/table/tbody/tr[3]/td[1]/ng2-smart-table-cell/table-cell-view-mode/div/custom-view-component/ngx-table-view-employee/div[3]/label");
+
+    private By healthResults= By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div[1]/div/div/div/div/nb-layout-column/div/ngx-employee-details/nb-card/nb-card-body/div[5]/nb-tabset/ul/li[1]/a/span");
+
+
+    //    private By healthData1= By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div[1]/div/div/div/div/nb-layout-column/div/ngx-employee-details/nb-card/nb-card-body/div[5]/nb-tabset/nb-tab[1]/ngx-health-checkup-result/div/div/div/ngx-data-table/div/div[2]/div/div/ng2-smart-table/table/tbody/tr[1]/td[5]/ng2-smart-table-cell/table-cell-view-mode/div/custom-view-component/ngx-details-btn/div/div/div/div[1]/div");
+    private By healthData1 = By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div[1]/div/div/div/div/nb-layout-column/div/ngx-employee-details/nb-card/nb-card-body/div[5]/nb-tabset/nb-tab[1]/ngx-health-checkup-result/div/div/div/ngx-data-table/div/div[2]/div/div/ng2-smart-table/table/tbody/tr[1]/td[2]/ng2-smart-table-cell/table-cell-view-mode/div/custom-view-component/ngx-details-btn/div/div/label/nb-icon");
+    private By noData= By.xpath("/html/body/ngx-app/ngx-pages/ngx-one-column-layout/nb-layout/div[1]/div/div/div/div/nb-layout-column/div/ngx-employee-details/nb-card/nb-card-body/div[5]/nb-tabset/nb-tab[1]/ngx-health-checkup-result/div/div/div/ngx-data-table/div/div[2]/div/div/ng2-smart-table/table/tbody/tr/td");
 
 
 
@@ -118,5 +133,50 @@ public class DashboardPage {
         WebElement healthcheckTitleElement = wait.until(ExpectedConditions.visibilityOfElementLocated(healthcheckTitle));
         healthcheckTitleElement.click();
     }
+    public void healthCheckEmployee(){
+        WebElement healthCheckEmployeeElement = driver.findElement(healthCheckEmployee);
+        healthCheckEmployeeElement.click();
+
+    }
+    public void healthResults(){
+        WebElement healthResultsElement = driver.findElement(healthResults);
+        healthResultsElement.click();
+
+    }
+//    public void healthData(){
+//        WebElement healthDataElement = driver.findElement(healthData);
+//        healthDataElement.isDisplayed();
+//    }
+//
+//    public void noData(){
+//        WebElement noDataElement = driver.findElement(noData);
+//        noDataElement.isDisplayed();
+//    }
+
+    public boolean healthData() {
+//        try {
+//            WebElement healthDataElement = wait.until(ExpectedConditions.visibilityOfElementLocated(healthData1));
+//            return healthDataElement.isDisplayed();
+//        } catch (NoSuchElementException e) {
+//            return false;
+//        }
+        if (driver.findElement(healthData1).isDisplayed()){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean noData() {
+        try {
+            WebElement noDataElement = driver.findElement(noData);
+            return noDataElement.isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+
+
 
 }
